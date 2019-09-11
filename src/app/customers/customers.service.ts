@@ -3,22 +3,29 @@ import { HttpClient } from "@angular/common/http";
 
 import { map } from "rxjs/operators";
 import { Customer } from "./customer";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class CustomersService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   public findAll() {
-    return this.http.get("http://localhost:8000/customers").pipe(
-      map(data => {
-        // travailler sur les données
-        // Les transformer
-        // les retourner sous la forme d'un tableau de véritable customers
-        return data["hydra:member"] as Customer[];
+    return this.http
+      .get("http://localhost:8000/customers", {
+        headers: {
+          Authorization: "Bearer " + this.auth.getToken()
+        }
       })
-    );
+      .pipe(
+        map(data => {
+          // travailler sur les données
+          // Les transformer
+          // les retourner sous la forme d'un tableau de véritable customers
+          return data["hydra:member"] as Customer[];
+        })
+      );
   }
 
   public create(customer: Customer) {
