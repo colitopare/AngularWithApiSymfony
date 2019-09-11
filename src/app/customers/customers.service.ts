@@ -11,13 +11,17 @@ import { AuthService } from "../auth/auth.service";
 export class CustomersService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
+  private getHeaders() {
+    return {
+      headers: {
+        Authorization: "Bearer " + this.auth.getToken()
+      }
+    };
+  }
+
   public findAll() {
     return this.http
-      .get("http://localhost:8000/customers", {
-        headers: {
-          Authorization: "Bearer " + this.auth.getToken()
-        }
-      })
+      .get("http://localhost:8000/customers", this.getHeaders())
       .pipe(
         map(data => {
           // travailler sur les données
@@ -31,12 +35,16 @@ export class CustomersService {
   public create(customer: Customer) {
     return this.http.post<Customer>(
       "http://localhost:8000/customers",
-      customer
+      customer,
+      this.getHeaders()
     );
   }
 
   public find(id: number) {
-    return this.http.get<Customer>("http://localhost:8000/customers/" + id);
+    return this.http.get<Customer>(
+      "http://localhost:8000/customers/" + id,
+      this.getHeaders()
+    );
   }
 
   public update(customer: Customer) {
@@ -48,7 +56,8 @@ export class CustomersService {
     };
     return this.http.put<Customer>(
       "http://localhost:8000/customers/" + customer.id,
-      updatedCustomer
+      updatedCustomer,
+      this.getHeaders()
     );
   }
 }

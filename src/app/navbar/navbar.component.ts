@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../auth/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-navbar",
@@ -12,17 +14,17 @@ import { Component, OnInit } from "@angular/core";
         </ul>
 
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
+          <li *ngIf="!isAuthentification">
             <a class="waves-effect waves-light btn" routerLink="/register"
               >Inscription</a
             >
           </li>
-          <li>
+          <li *ngIf="!isAuthentification">
             <a class="waves-effect waves-light btn" routerLink="/login"
               >Connexion</a
             >
           </li>
-          <li>
+          <li *ngIf="isAuthentification">
             <a class="waves-effect waves-light btn" routerLink="/profile"
               ><img
                 src="http://robohash.org/muriel"
@@ -31,7 +33,9 @@ import { Component, OnInit } from "@angular/core";
               />Muriel IMBERT</a
             >
           </li>
-          <li><button routerLink="/logout">Déconnexion</button></li>
+          <li *ngIf="isAuthentification">
+            <button (click)="handleLogout()">Déconnexion</button>
+          </li>
         </ul>
       </div>
     </nav>
@@ -49,7 +53,21 @@ import { Component, OnInit } from "@angular/core";
   ]
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  isAuthentification = false;
 
-  ngOnInit() {}
+  constructor(private service: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.isAuthentification = this.service.isAuthenticated();
+
+    this.service.authState.subscribe(
+      state => (this.isAuthentification = state)
+    );
+  }
+
+  handleLogout() {
+    this.service.logout();
+    this.isAuthentification = false;
+    this.router.navigateByUrl("/login");
+  }
 }
