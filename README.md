@@ -1,27 +1,17 @@
-# Client
+## ANGULAR :
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.1.
+## LES INTERCEPTEURS :
 
-## Development server
+Permet d'intercepter une requête HTTP avant son envoi afin d'effectuer des manipulations / changements dessus (exemple : ajouter un header)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## LES GUARDS :
 
-## Code scaffolding
+Permet de contrôler l'accès à une route
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## LES RESOLVERS :
 
-## Build
+Permet de résoudre (d'obtenir) les données dont un composant a besoin AVANT d'afficher le composant. Il facilite la rédaction du composant qui n'a plus besoin d'appeler un service / d'observer une requête HTTP. Il se sert simplement de ce que le Resolver lui donne.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## LES EVENEMENTS DU ROUTER :
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Le router émet régulièrement des événements (https://angular.io/api/router/Event) auxquels on peut souscrire pour y réagir.

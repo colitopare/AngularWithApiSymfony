@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ResolveStart, ResolveEnd } from "@angular/router";
+import {
+  Router,
+  ResolveStart,
+  ResolveEnd,
+  NavigationCancel
+} from "@angular/router";
 import { UiService } from "./ui/ui.service";
 
 @Component({
@@ -24,7 +29,10 @@ export class AppComponent implements OnInit {
       if (event instanceof ResolveStart) {
         // on va charger ...
         this.isLoading = true;
-      } else if (event instanceof ResolveEnd) {
+      } else if (
+        event instanceof ResolveEnd ||
+        event instanceof NavigationCancel
+      ) {
         // On a fini de charger ...
         this.isLoading = false;
       }
