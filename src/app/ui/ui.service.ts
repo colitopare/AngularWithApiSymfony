@@ -1,10 +1,20 @@
 import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 export class UiService {
+  loadingState = new Subject<boolean>();
+
   constructor() {}
+
+  public activateLoading() {
+    this.loadingState.next(true);
+  }
+  public deactivateLoading() {
+    this.loadingState.next(false);
+  }
 
   public getInvoiceStatusLabel(status: string) {
     const labels = {

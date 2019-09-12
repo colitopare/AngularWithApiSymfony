@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import { Router } from "@angular/router";
+import { UiService } from "src/app/ui/ui.service";
 
 @Component({
   selector: "app-login",
@@ -59,20 +60,34 @@ export class LoginComponent implements OnInit {
     username: new FormControl("", [Validators.required, Validators.email]),
     password: new FormControl("", Validators.required)
   });
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private ui: UiService
+  ) {}
 
   ngOnInit() {}
 
   handleSubmit() {
     if (this.form.invalid) return;
 
+    // Active l'écran de chargement
+    this.ui.activateLoading;
+
     this.auth.authenticate(this.form.value).subscribe(
       result => {
-        console.log(result);
+        // Déactive le temps de chargement
+        this.ui.deactivateLoading;
+
+        // console.log(result);
         this.errorMessage = "";
         this.router.navigateByUrl("/");
       },
       error => {
+        // Lorsque l'erreur est affichée, on a plus besoin du charegment
+        // Déactive le temps de chargement
+        this.ui.deactivateLoading;
+
         if (error.status === 401) {
           this.errorMessage =
             "Nous n'avons pas trouvé de correspondance avec cet email ou ce mot de passe";
