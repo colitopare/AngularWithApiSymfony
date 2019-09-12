@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Credentials } from "./credentials";
 import { map } from "rxjs/operators";
 import { Subject } from "rxjs";
+import jwtDecode from "jwt-decode";
 
 @Injectable({
   providedIn: "root"
@@ -10,7 +11,7 @@ import { Subject } from "rxjs";
 export class AuthService {
   authState = new Subject<boolean>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private storage: Storage) {}
 
   authenticate(credentials: Credentials) {
     return this.http
@@ -25,12 +26,12 @@ export class AuthService {
   }
 
   getToken(): string {
-    return window.localStorage.getItem("token") || null;
+    return this.storage.getItem("token") || null;
   }
 
   logout() {
     this.authState.next(false);
-    window.localStorage.removeItem("token");
+    this.storage.removeItem("token");
   }
 
   isAuthenticated(): boolean {
@@ -42,5 +43,11 @@ export class AuthService {
     return this.getToken() ? true : false;
     // ou
     return this.getToken() !== null;
+  }
+
+  getUserData() {
+    if (!this.getToken()) return null;
+    // token décoder
+    return jwtDecode(this.getToken());
   }
 }

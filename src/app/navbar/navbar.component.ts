@@ -27,10 +27,10 @@ import { Router } from "@angular/router";
           <li *ngIf="isAuthentification">
             <a class="waves-effect waves-light btn" routerLink="/profile"
               ><img
-                src="http://robohash.org/muriel"
+                src="{{ userData.avatar }}"
                 alt="Avatar Muriel"
                 class="avatar"
-              />Muriel IMBERT</a
+              />{{ userData.username }}</a
             >
           </li>
           <li *ngIf="isAuthentification">
@@ -54,15 +54,25 @@ import { Router } from "@angular/router";
 })
 export class NavbarComponent implements OnInit {
   isAuthentification = false;
+  userData: any;
 
   constructor(private service: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.isAuthentification = this.service.isAuthenticated();
 
-    this.service.authState.subscribe(
-      state => (this.isAuthentification = state)
-    );
+    if (this.isAuthentification) {
+      this.userData = this.service.getUserData();
+      console.log(this.userData);
+    }
+
+    this.service.authState.subscribe(state => {
+      this.isAuthentification = state;
+      if (this.isAuthentification) {
+        this.userData = this.service.getUserData();
+        console.log(this.userData);
+      }
+    });
   }
 
   handleLogout() {
