@@ -8,12 +8,30 @@ import { CustomerFormComponent } from "./customers/customer-form/customer-form.c
 import { CustomerViewComponent } from "./customers/customer-view/customer-view.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { AuthModule } from "./auth/auth.module";
+import { AuthGuard } from "./auth/auth.guard";
+import { Error404Component } from './error404/error404.component';
 
 const routes: Routes = [
-  { path: "customers/new", component: CustomerFormComponent },
-  { path: "customers/:id/edit", component: CustomerFormComponent },
-  { path: "customers/:id", component: CustomerViewComponent },
-  { path: "customers", component: CustomersComponent },
+  {
+    path: "customers/new",
+    component: CustomerFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "customers/:id/edit",
+    component: CustomerFormComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "customers/:id",
+    component: CustomerViewComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "customers",
+    component: CustomersComponent,
+    canActivate: [AuthGuard]
+  },
   { path: "login", component: LoginComponent },
   { path: "", redirectTo: "/customers", pathMatch: "full" }
 ];
@@ -25,6 +43,7 @@ const routes: Routes = [
     HttpClientModule,
     AuthModule
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  declarations: [Error404Component]
 })
 export class AppRoutingModule {}

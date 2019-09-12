@@ -18,8 +18,8 @@ export class AuthService {
       .post("http://localhost:8000/login_check", credentials)
       .pipe(
         map((result: { token: string }) => {
-          this.authState.next(true);
           window.localStorage.setItem("token", result.token);
+          this.authState.next(true);
           return result;
         })
       );

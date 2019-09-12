@@ -27,7 +27,7 @@ import { Router } from "@angular/router";
           <li *ngIf="isAuthentification">
             <a class="waves-effect waves-light btn" routerLink="/profile"
               ><img
-                src="{{ userData.avatar }}"
+                [src]="userData.avatar"
                 alt="Avatar Muriel"
                 class="avatar"
               />{{ userData.username }}</a
