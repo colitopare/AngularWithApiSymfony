@@ -10,6 +10,8 @@ import { LoginComponent } from "./auth/login/login.component";
 import { AuthModule } from "./auth/auth.module";
 import { AuthGuard } from "./auth/auth.guard";
 import { Error404Component } from "./error404/error404.component";
+import { CustomersResolver } from "./customers/customers.resolver";
+import { CustomerResolver } from "./customers/customer.resolver";
 
 const routes: Routes = [
   {
@@ -20,17 +22,20 @@ const routes: Routes = [
   {
     path: "customers/:id/edit",
     component: CustomerFormComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { apiCustomer: CustomerResolver }
   },
   {
     path: "customers/:id",
     component: CustomerViewComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { apiCustomer: CustomerResolver }
   },
   {
     path: "customers",
     component: CustomersComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    resolve: { apiCustomers: CustomersResolver }
   },
   { path: "login", component: LoginComponent },
   { path: "", redirectTo: "/customers", pathMatch: "full" },

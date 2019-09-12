@@ -96,28 +96,33 @@ export class CustomerFormComponent implements OnInit {
     //   }
     // });
 
+    // Là c'est sans utiliser le resolver
+
     // Nous observons les paramètres de la route (/customers/__:id__)
     // nous réagissons si ils changent
-    this.route.paramMap
-      // Transformation de l'observable
-      .pipe(
-        // On transforme une liste de paramètres en un simple nombre (l'id)
-        map(params => +params.get("id")),
-        // On transforme l'id en un observable
-        switchMap(id => {
-          if (id) {
-            // Si on a un id, on tranforme en un observable d'un customer
-            return this.service.find(id);
-          }
-          // Sinon on transforme en un observable de undefined
-          return of(undefined);
-        })
-      )
-      // On souscrit à l'observable qui va nous donner soit un customer soit undefined
-      .subscribe(httpCustomer => {
-        this.customer = httpCustomer;
-        this.initiliazeForm();
-      });
+    // this.route.paramMap
+    //   // Transformation de l'observable
+    //   .pipe(
+    //     // On transforme une liste de paramètres en un simple nombre (l'id)
+    //     map(params => +params.get("id")),
+    //     // On transforme l'id en un observable
+    //     switchMap(id => {
+    //       if (id) {
+    //         // Si on a un id, on tranforme en un observable d'un customer
+    //         return this.service.find(id);
+    //       }
+    //       // Sinon on transforme en un observable de undefined
+    //       return of(undefined);
+    //     })
+    //   )
+    //   // On souscrit à l'observable qui va nous donner soit un customer soit undefined
+    //   .subscribe(httpCustomer => {
+    //     this.customer = httpCustomer;
+    //     this.initiliazeForm();
+    //   });
+
+    // là c'est en utilsant le résolver
+    this.customer = this.route.snapshot.data.apiCustomer;
   }
 
   initiliazeForm() {

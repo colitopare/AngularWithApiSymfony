@@ -81,19 +81,18 @@ import { UiService } from "src/app/ui/ui.service";
 })
 export class CustomerViewComponent implements OnInit {
   customer: Customer;
-  constructor(
-    private service: CustomersService,
-    private ui: UiService,
-    private route: ActivatedRoute
-  ) {}
+  constructor(private ui: UiService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.paramMap
-      .pipe(
-        map(params => +params.get("id")),
-        switchMap(id => this.service.find(id))
-      )
-      .subscribe(httpCustomer => (this.customer = httpCustomer));
+    // Plus besoin car j'utilise un resolver pour récupérer les données du customer
+    // this.route.paramMap
+    //   .pipe(
+    //     map(params => +params.get("id")),
+    //     switchMap(id => this.service.find(id))
+    //   )
+    //   .subscribe(httpCustomer => (this.customer = httpCustomer));
+
+    this.customer = this.route.snapshot.data.apiCustomer;
   }
 
   getStatusLabel(status: string) {

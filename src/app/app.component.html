@@ -1,4 +1,7 @@
+<app-navbar></app-navbar>
 <div class="container">
-  <app-navbar></app-navbar>
+  <div *ngIf="isLoading" class="alert alert-info">
+    chargement ...
+  </div>
   <router-outlet></router-outlet>
 </div>

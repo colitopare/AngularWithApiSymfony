@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 
 import { Customer } from "../customer";
 import { CustomersService } from "../customers.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-custumers",
@@ -44,11 +45,12 @@ import { CustomersService } from "../customers.service";
   styles: []
 })
 export class CustomersComponent implements OnInit {
-  customers: Customer[] = [];
+  customers: Customer[];
 
-  constructor(private service: CustomersService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.service.findAll().subscribe(customers => (this.customers = customers));
+    // Là j'utilise le resolver spécifié dans app-routing
+    this.customers = this.route.snapshot.data.apiCustomers;
   }
 }
